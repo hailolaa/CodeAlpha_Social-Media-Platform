@@ -7,7 +7,7 @@ const path = require('path');
 
 
 
-app.use(express.static(path.join(__dirname, 'frontend'))); 
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 app.use(cors({
   origin: 'http://127.0.0.1:5500',
@@ -23,8 +23,14 @@ app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 
 
+app.listen(5000, () => {
+  console.log('Server running on port 5000');
+  console.log('Access the application at http://localhost:5000');
+});
+
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    app.listen(5000, () => console.log('Server running on port 5000'));
-  })
-  .catch(err => console.error(err));
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => {
+    console.error('MongoDB Connection Error:', err.message);
+    console.log('Continuing without database... API calls will fail.');
+  });

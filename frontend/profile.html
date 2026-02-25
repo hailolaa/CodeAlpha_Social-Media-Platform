@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>User Profile</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
   <div class="sidebar">
-    <h2 class="logo">GetSocial</h2>
+    <h2 class="logo"><i class="fas fa-globe"></i><span>GetSocial</span></h2>
     <ul class="nav-links">
-      <li><a href="feed.html"><i class="fas fa-home"></i> Home</a></li>
-      <li><a href="profile.html" id="profile-link" class="active"><i class="fas fa-user"></i> Profile</a></li>
-      <li><a href="search.html"><i class="fas fa-search"></i> Search</a></li>
-      <li><a href="create-post.html"><i class="fas fa-plus-circle"></i> Post</a></li>
-      <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+      <li><a href="feed.html"><i class="fas fa-home"></i> <span>Home</span></a></li>
+      <li><a href="profile.html" id="profile-link" class="active"><i class="fas fa-user"></i> <span>Profile</span></a>
+      </li>
+      <li><a href="search.html"><i class="fas fa-search"></i> <span>Search</span></a></li>
+      <li><a href="create-post.html"><i class="fas fa-plus-circle"></i> <span>Create Post</span></a></li>
+      <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></li>
     </ul>
   </div>
 
@@ -22,32 +25,48 @@
       <img id="profile-image" src="" alt="Profile Image" class="profile-img" />
       <h2 id="profile-name"></h2>
       <p id="profile-email" class="hidden"></p>
-      <p><strong>Bio:</strong> <span id="profile-bio"></span></p>
-      <p class="hidden"><strong>Location:</strong> <span id="profile-location"></span></p>
+      <p id="profile-bio-container"><strong>Bio:</strong> <span id="profile-bio"></span></p>
+      <p id="profile-location-container" class="hidden"><strong>Location:</strong> <span id="profile-location"></span>
+      </p>
 
       <div class="profile-stats">
-        <span>Posts: <span id="posts-count">0</span></span>
-        <span>Followers: <span id="followers-count">0</span></span>
-        <span>Following: <span id="following-count">0</span></span>
+        <div class="stat-item">
+          <span class="stat-value" id="posts-count">0</span>
+          <span class="stat-label">Posts</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="followers-count">0</span>
+          <span class="stat-label">Followers</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="following-count">0</span>
+          <span class="stat-label">Following</span>
+        </div>
       </div>
 
-      <button id="follow-btn" class="btn">Follow</button>
-      <button id="editProfileBtn" class="btn secondary" style="display: none;">Edit Profile</button>
+      <div class="profile-actions">
+        <button id="follow-btn" class="btn primary">Follow</button>
+        <button id="editProfileBtn" class="btn secondary" style="display: none;">Edit Profile</button>
+      </div>
 
-      <form id="editProfileForm" class="hidden">
-        <input type="text" id="editUsername" placeholder="Username" />
-        <input type="email" id="editEmail" placeholder="Email" />
-        <input type="text" id="editBio" placeholder="Your Bio" />
-        <input type="text" id="editLocation" placeholder="Your Location" />
-        <input type="file" id="editProfileImg" name="profileImg" accept="image/*" />
-        <button type="submit" id="saveProfileBtn" class="btn primary">Save</button>
+      <form id="editProfileForm" class="hidden" style="margin-top: 24px; text-align: left;">
+        <input type="text" id="editUsername" placeholder="Username" style="margin-bottom: 12px;" />
+        <input type="email" id="editEmail" placeholder="Email" style="margin-bottom: 12px;" />
+        <input type="text" id="editBio" placeholder="Your Bio" style="margin-bottom: 12px;" />
+        <input type="text" id="editLocation" placeholder="Your Location" style="margin-bottom: 12px;" />
+        <div class="file-input" style="margin-bottom: 16px;">
+          <label for="editProfileImg"><i class="fas fa-camera"></i> Change Photo</label>
+          <input type="file" id="editProfileImg" name="profileImg" accept="image/*" />
+        </div>
+        <button type="submit" id="saveProfileBtn" class="btn primary" style="width: 100%;">Save Changes</button>
       </form>
     </div>
 
-    <div id="user-posts" class="posts-grid"></div>
+    <div id="user-posts" class="post-container"></div>
   </div>
 
   <script type="module" src="js/utils.js"></script>
   <script type="module" src="js/profile.js"></script>
 </body>
+
 </html>

@@ -25,13 +25,16 @@ searchInput.addEventListener("input", async () => {
 
     searchResults.innerHTML = users
       .map(user => `
-        <div class="search-result" data-id="${user._id}">
-          <img src="${user.profileImg || '/default-avatar.png'}" width="40"/>
-          <span>${user.username || user.name}</span>
+        <div class="user-card search-result" data-id="${user._id}" style="cursor: pointer; margin-bottom: 12px;">
+          <img src="${user.profileImg ? `http://localhost:5000${user.profileImg}` : 'https://via.placeholder.com/60'}" />
+          <div class="user-info">
+              <h4>${user.username}</h4>
+              <p>${user.bio || 'Social Media Enthusiast'}</p>
+          </div>
         </div>
       `).join("");
 
-      document.querySelectorAll(".search-result").forEach(el => {
+    document.querySelectorAll(".search-result").forEach(el => {
       el.addEventListener("click", () => {
         const userId = el.getAttribute("data-id");
         window.location.href = `profile.html?id=${userId}`;

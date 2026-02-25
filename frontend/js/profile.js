@@ -34,25 +34,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Fill profile info
       document.getElementById("profile-name").textContent = user.username;
-      document.getElementById("profile-email").textContent = user.email;
-      document.getElementById("profile-bio").textContent = user.bio || "No bio available";
-      document.getElementById("profile-location").textContent = user.location || "No location specified";
-      
-      
+      const bioEl = document.getElementById("profile-bio");
+      bioEl.textContent = user.bio || "No bio available";
+
+      const locationEl = document.getElementById("profile-location");
+      const locationContainer = document.getElementById("profile-location-container");
+      if (user.location) {
+        locationEl.textContent = user.location;
+        locationContainer.classList.remove("hidden");
+      } else {
+        locationContainer.classList.add("hidden");
+      }
+
       const profileImageEl = document.getElementById("profile-image");
       if (user.profileImg) {
         profileImageEl.src = `http://localhost:5000${user.profileImg}`;
       } else {
-        profileImageEl.src = "http://localhost:5000/images/user.png"; // fallback image
+        profileImageEl.src = "https://via.placeholder.com/150"; // improved fallback
       }
 
-    
+
 
 
       // Followers / Following counts
       followersCountEl.textContent = user.followers.length;
       followingCountEl.textContent = user.following.length;
-    
+
 
       // Follow button logic
       if (targetUserId === currentUserId) {
@@ -70,35 +77,40 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function loadUserPosts() {
-  try {
-    const res = await fetch(`http://localhost:5000/api/posts/user/${targetUserId}`,
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    if (!res.ok) throw new Error("Failed to load posts");
+    try {
+      const res = await fetch(`http://localhost:5000/api/posts/user/${targetUserId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (!res.ok) throw new Error("Failed to load posts");
 
-    const posts = await res.json();
-    const container = document.getElementById("user-posts"); // ✅ Use existing div
-    container.innerHTML = ""; // Clear previous posts
+      const posts = await res.json();
+      const container = document.getElementById("user-posts"); // ✅ Use existing div
+      container.innerHTML = ""; // Clear previous posts
 
-    posts.forEach(post => {
-      postsCountEl.textContent = posts.length; // Update post count
-      const postDiv = document.createElement('div');
-      postDiv.className = "post-card";
+      posts.forEach(post => {
+        postsCountEl.textContent = posts.length; // Update post count
+        const postDiv = document.createElement('div');
+        postDiv.className = "post-card";
 
-      postDiv.innerHTML = `
-        <p><strong>${post.userId.username}</strong></p>
-        <p>${post.content}</p>
-        ${post.image ? `<img src="http://localhost:5000${post.image}" width="300"/>` : ''}
-        <p>Likes: ${post.likes.length} | Comments: ${post.comments.length}</p>
-        <hr />
+        postDiv.innerHTML = `
+        <div style="margin-bottom: 12px; font-weight: 600; font-size: 14px; color: #6e6e73;">
+            <i class="far fa-calendar-alt" style="margin-right: 6px;"></i>
+            ${new Date(post.createdAt).toLocaleDateString()}
+        </div>
+        <p style="margin-bottom: 16px;">${post.content}</p>
+        ${post.image ? `<img src="http://localhost:5000${post.image}" alt="post" style="width: 100%; border-radius: 12px; margin-bottom: 16px; object-fit: cover;" />` : ''}
+        <div style="display: flex; gap: 20px; border-top: 1px solid #f0f0f0; padding-top: 12px; font-size: 14px; color: #6e6e73;">
+            <span><i class="fas fa-heart" style="color: #e63946; margin-right: 4px;"></i> ${post.likes.length}</span>
+            <span><i class="fas fa-comment" style="margin-right: 4px;"></i> ${post.comments.length}</span>
+        </div>
       `;
 
-      container.appendChild(postDiv); // ✅ Append to user-posts, not body
-    });
-  } catch (error) {
-    console.error("Error loading posts:", error);
+        container.appendChild(postDiv); // ✅ Append to user-posts, not body
+      });
+    } catch (error) {
+      console.error("Error loading posts:", error);
+    }
   }
-}
 
 
 
@@ -133,9 +145,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const editBtn = document.getElementById("editProfileBtn");
 
-  if(targetUserId === currentUserId){
-    editBtn.style.display= "block";
-    
+  if (targetUserId === currentUserId) {
+    editBtn.style.display = "block";
+
   }
 
   editBtn.addEventListener("click", () => {
@@ -144,49 +156,49 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.getElementById("editProfileForm").addEventListener("submit", async function (e) {
-  e.preventDefault();
+    e.preventDefault();
 
-  const formername = document.getElementById("profile-name").innerHTML;
-  const formeremail = document.getElementById("profile-email").innerHTML;
-  const formerlocation = document.getElementById("profile-location").innerHTML;
-  const formerbio = document.getElementById("profile-bio").innerHTML;
+    const formername = document.getElementById("profile-name").innerHTML;
+    const formeremail = document.getElementById("profile-email").innerHTML;
+    const formerlocation = document.getElementById("profile-location").innerHTML;
+    const formerbio = document.getElementById("profile-bio").innerHTML;
 
 
-  const formData = new FormData();
-  formData.append("username", document.getElementById("editUsername").value || formername);
-  formData.append("email", document.getElementById("editEmail").value || formeremail);
-  formData.append("location", document.getElementById("editLocation").value || formerlocation);
-  formData.append("bio", document.getElementById("editBio").value || formerbio);
+    const formData = new FormData();
+    formData.append("username", document.getElementById("editUsername").value || formername);
+    formData.append("email", document.getElementById("editEmail").value || formeremail);
+    formData.append("location", document.getElementById("editLocation").value || formerlocation);
+    formData.append("bio", document.getElementById("editBio").value || formerbio);
 
-  const imageInput = document.getElementById("editProfileImg");
-  if (imageInput.files.length > 0) {
-    formData.append("profileImg", imageInput.files[0]);
-  }
-
-  const res = await fetch(`http://localhost:5000/api/users/${targetUserId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    method: "PUT",
-    body: formData,
-  });
-
-  const data = await res.json();
-  if (res.ok) {
-    alert("Profile updated!");
-     const updatedUser = await res.json();
-
-  // Update the profile image src immediately
-    const profileImageEl = document.getElementById("profile-image");
-    if (updatedUser.profileImg) {
-    // Add a cache-buster query param to avoid browser caching old image
-    profileImageEl.src = `http://localhost:5000${updatedUser.profileImg}?t=${Date.now()}`;
+    const imageInput = document.getElementById("editProfileImg");
+    if (imageInput.files.length > 0) {
+      formData.append("profileImg", imageInput.files[0]);
     }
-    location.reload();
+
+    const res = await fetch(`http://localhost:5000/api/users/${targetUserId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      method: "PUT",
+      body: formData,
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      alert("Profile updated!");
+      const updatedUser = await res.json();
+
+      // Update the profile image src immediately
+      const profileImageEl = document.getElementById("profile-image");
+      if (updatedUser.profileImg) {
+        // Add a cache-buster query param to avoid browser caching old image
+        profileImageEl.src = `http://localhost:5000${updatedUser.profileImg}?t=${Date.now()}`;
+      }
+      location.reload();
     } else {
-    alert("Error: " + data.message);
+      alert("Error: " + data.message);
     }
-});
+  });
 
 });
 
@@ -195,5 +207,5 @@ document.addEventListener("DOMContentLoaded", () => {
 function getTargetUserIdFromURL() {
   const params = new URLSearchParams(window.location.search);
   return params.get('id');
-} 
+}
 

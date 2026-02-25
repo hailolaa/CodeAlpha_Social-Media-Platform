@@ -3,18 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - MySocial</title>
+  <title>Login - GetSocial</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body class="auth-page">
   <div class="auth-container">
-    <h2>Login</h2>
+    <div class="logo" style="justify-content: center; margin-bottom: 20px;">
+        <i class="fas fa-globe"></i>
+        <span>GetSocial</span>
+    </div>
+    <h2>Welcome Back</h2>
     <form id="loginForm">
-      <input type="email" placeholder="Email" id="email" required>
+      <input type="email" placeholder="Email Address" id="email" required>
       <input type="password" placeholder="Password" id="password" required>
-      <button type="submit">Login</button>
+      <button type="submit">Log In</button>
     </form>
-    <p>Don't have an account? <a href="register.html">Register here</a></p>
+    <p>Don't have an account? <a href="register.html">Create one now</a></p>
   </div>
   <script type="module" src="./js/auth.js"></script>
 </body>

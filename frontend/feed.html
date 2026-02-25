@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,16 +8,17 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
   <!-- Sidebar -->
   <div class="sidebar">
-    <h2 class="logo"><i class="fas fa-globe"></i>GetSocial</h2>
+    <h2 class="logo"><i class="fas fa-globe"></i><span>GetSocial</span></h2>
     <ul class="nav-links">
-      <li><a href="feed.html"><i class="fas fa-home"></i> Home</a></li>
-      <li><a href="profile.html " id="profile-link"><i class="fas fa-user"></i> Profile</a></li>
-      <li><a href="search.html"><i class="fas fa-search"></i> Search</a></li>
-      <li><a href="create-post.html"><i class="fas fa-plus-circle"></i> Post</a></li>
-      <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+      <li><a href="feed.html" class="active"><i class="fas fa-home"></i> <span>Home</span></a></li>
+      <li><a href="profile.html" id="profile-link"><i class="fas fa-user"></i> <span>Profile</span></a></li>
+      <li><a href="search.html"><i class="fas fa-search"></i> <span>Search</span></a></li>
+      <li><a href="create-post.html"><i class="fas fa-plus-circle"></i> <span>Create Post</span></a></li>
+      <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></li>
     </ul>
   </div>
 
@@ -26,12 +28,14 @@
       <button id="allBtn" class="btn primary"><i class="fas fa-globe"></i> All Posts</button>
       <button id="timelineBtn" class="btn secondary"><i class="fas fa-user-clock"></i> My Timeline</button>
     </div>
-    <form id="postForm" enctype="multipart/form-data"></form>
 
-    <div id="posts" class="post-container"></div>
+    <div id="posts" class="post-container">
+      <!-- Posts will be injected here -->
+    </div>
   </div>
 
   <script type="module" src="./js/feed.js"></script>
   <script type="module" src="./js/auth.js"></script>
 </body>
+
 </html>
